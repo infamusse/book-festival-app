@@ -4,17 +4,17 @@ const uuidv4 = require("uuid/v4");
 
 const router = express.Router();
 
+router.route("/testimonials/random").get((req, res) => {
+  const random = Math.floor(Math.random() * db.testimonials.length);
+  res.json(db.testimonials[random]);
+});
+
 router.route("/testimonials").get((req, res) => {
   res.json(db.testimonials);
 });
 
 router.route("/testimonials/:id").get((req, res) => {
   res.json(db.testimonials.find(obj => obj.id == req.params.id));
-});
-
-router.route("/testimonials/random").get((req, res) => {
-  const random = Math.floor(Math.random() * db.testimonials.length);
-  res.json(db.testimonials[random]);
 });
 
 router.route("/testimonials").post((req, res) => {

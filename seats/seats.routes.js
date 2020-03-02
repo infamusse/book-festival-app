@@ -12,16 +12,27 @@ router.route("/seats/:id").get((req, res) => {
 });
 
 router.route("/seats").post((req, res) => {
-  const { performer, genere, price, day } = req.body;
+  const { client, seat, email, day } = req.body;
 
-  db.seats.push({
-    id: uuidv4(),
-    performer: performer,
-    genre: genere,
-    price: price,
-    day: day,
-    image: "nowe zdjęcie"
-  });
+  const databaseCondition = db.seats.filter(
+    obj => obj.day == day && obj.seat == seat
+  );
+
+  console.log(databaseCondition.length);
+
+  if (databaseCondition.length == 0) {
+    db.seats.push({
+      id: uuidv4(),
+      client: client,
+      email: email,
+      day: day,
+      seat: seat
+    });
+  } else {
+    {
+      message: "The slot is already taken...";
+    }
+  }
 
   res.json({ messeage: "OK" });
 });
