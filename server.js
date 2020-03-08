@@ -9,6 +9,8 @@ const testimonialsRoutes = require("./testimonials/testimonials.routes");
 
 const app = express();
 
+app.use(express.static(path.join(__dirname, "/client/build")));
+
 app.use(cors());
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
@@ -24,8 +26,6 @@ app.use("/api", testimonialsRoutes);
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
-
-app.use(express.static(path.join(__dirname, "/client/build")));
 
 app.listen(process.env.PORT || 8000, () => {
   console.log("Server is running on port: 8000");
