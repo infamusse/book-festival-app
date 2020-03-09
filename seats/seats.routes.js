@@ -2,6 +2,7 @@ const express = require("express");
 const router = express.Router();
 const db = require("./../db");
 const uuidv4 = require("uuid/v4");
+const socket = require("socket.io");
 
 router.route("/seats").get((req, res) => {
   res.json(db.seats);
@@ -18,8 +19,6 @@ router.route("/seats").post((req, res) => {
     obj => obj.day == day && obj.seat == seat
   );
 
-  console.log(databaseCondition.length);
-
   if (databaseCondition.length == 0) {
     db.seats.push({
       id: uuidv4(),
@@ -28,6 +27,7 @@ router.route("/seats").post((req, res) => {
       day: day,
       seat: seat
     });
+    req.io.emit("seatsUpdated", db.seats);
   } else {
     {
       message: "The slot is already taken...";
