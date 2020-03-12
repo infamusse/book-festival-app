@@ -1,5 +1,5 @@
 const express = require("express");
-const db = require("./db");
+const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const socket = require("socket.io");
@@ -32,6 +32,17 @@ app.use("/api", testimonialsRoutes);
 app.get("*", (req, res) => {
   res.sendFile(path.join(__dirname + "/client/build/index.html"));
 });
+
+// connects our backend code with the database
+// mongoose.connect("mongodb://localhost:27017/festivalDB", {
+//   useNewUrlParser: true
+// });
+// const db = mongoose.connection;
+
+// db.once("open", () => {
+//   console.log("Connected to the database");
+// });
+// db.on("error", err => console.log("Error " + err));
 
 const server = app.listen(process.env.PORT || 8000, () => {
   console.log("Server is running on port 8000");
