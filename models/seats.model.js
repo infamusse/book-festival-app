@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 
 const seatSchema = new mongoose.Schema({
+  _id: mongoose.Schema.ObjectId,
   id: { type: Number, required: true },
   day: { type: Number, required: true },
   seat: { type: Number, required: true },
