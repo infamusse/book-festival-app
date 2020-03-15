@@ -34,13 +34,18 @@ app.get("*", (req, res) => {
 });
 
 // connects our backend code with the database
-mongoose.connect("mongodb://localhost:27017/festivalDB", {
-  useNewUrlParser: true
-});
+mongoose.connect(
+  "mongodb+srv://infamusse:kodilla123@cluster0-ifecn.mongodb.net/festivalDB?retryWrites=true&w=majority",
+  {
+    useNewUrlParser: true,
+    useUnifiedTopology: true
+  }
+);
 const db = mongoose.connection;
 
 db.once("open", () => {
-  console.log("Connected to the  concert database");
+  console.log("Connected to the concert database");
+  // console.log(db);
 });
 db.on("error", err => console.log("Error " + err));
 
