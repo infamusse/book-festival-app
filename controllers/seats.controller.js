@@ -1,3 +1,4 @@
+const { uuid } = require("uuidv4");
 const Seat = require("../models/seats.model");
 
 exports.getAll = async (req, res) => {
@@ -19,18 +20,19 @@ exports.getOne = async (req, res) => {
 exports.post = async (req, res) => {
   console.log("seats", req.body);
   try {
-    const { id, day, seat, client, email } = req.body;
-    const newSeat = new Seat(
-      { id: id },
-      { day: day },
-      { seat: seat },
-      { client: client },
-      { email: email }
-    );
+    const { day, seat, client, email } = req.body;
+    const newSeat = new Seat({
+      id: uuid(),
+      day: day,
+      seat: seat,
+      client: client,
+      email: email
+    });
     console.log("newSeat", newSeat);
     await newSeat.save();
     res.json({ message: "OK" });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ message: err });
   }
 };

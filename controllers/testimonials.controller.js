@@ -20,11 +20,11 @@ exports.post = async (req, res) => {
   console.log("testimonials", req.body);
   try {
     const { id, author, text } = req.body;
-    const newTestimonial = new Testimonial(
-      { id: id },
-      { author: author },
-      { text: text }
-    );
+    const newTestimonial = new Testimonial({
+      id: id,
+      author: author,
+      text: text
+    });
     await newTestimonial.save();
     res.json({ message: "OK" });
   } catch (err) {
