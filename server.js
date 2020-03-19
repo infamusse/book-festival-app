@@ -3,6 +3,7 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const socket = require("socket.io");
+require("dotenv").config();
 
 const concertsRoutes = require("./concerts/concerts.routes");
 const seatsRoutes = require("./seats/seats.routes");
@@ -35,7 +36,7 @@ app.get("*", (req, res) => {
 
 // connects our backend code with the database
 mongoose.connect(
-  "mongodb+srv://infamusse:kodilla123@cluster0-ifecn.mongodb.net/festivalDB?retryWrites=true&w=majority",
+  `mongodb+srv://infamusse:${process.env.DBPASSWORD}@cluster0-ifecn.mongodb.net/festivalDB?retryWrites=true&w=majority`,
   {
     useNewUrlParser: true,
     useUnifiedTopology: true
