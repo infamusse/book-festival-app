@@ -1,6 +1,6 @@
 const chai = require("chai");
 const chaiHttp = require("chai-http");
-const { server } = require("../../../server.js");
+const server = require("../../../server.js");
 const Concert = require("../../../models/concerts.model");
 
 chai.use(chaiHttp);
@@ -21,14 +21,35 @@ describe("GET api/concerts/", () => {
     await testConcOne.save();
   });
 
-  //   after(async () => {
-  //     await Concert.deleteMany();
-  //   });
+  after(async () => {
+    await Concert.deleteOne({ id: 1 });
+  });
 
   it("/ should return choosen perfomer", async () => {
-    const res = await request(server).get("http://localhost:8000/api");
-    // expect(res.status).to.be.equal(200);
-    // expect(res.body).to.be.an("object");
-    // expect(res.body.length).to.be.equal(2);
+    const res = await request(server).get("/api/concerts/performer/U2");
+    expect(res.status).to.be.equal(200);
+    expect(res.body).to.be.an("array");
+    expect(res.body).to.not.be.null;
+  });
+
+  it("/ should return choosen genre", async () => {
+    const res = await request(server).get("/api/concerts/genre/Rock");
+    expect(res.status).to.be.equal(200);
+    expect(res.body).to.be.an("array");
+    expect(res.body).to.not.be.null;
+  });
+
+  it("/ should return choosen day", async () => {
+    const res = await request(server).get("/api/concerts/day/1");
+    expect(res.status).to.be.equal(200);
+    expect(res.body).to.be.an("array");
+    expect(res.body).to.not.be.null;
+  });
+
+  it("/ should return price range", async () => {
+    const res = await request(server).get("/api/concerts/price/50/80");
+    expect(res.status).to.be.equal(200);
+    expect(res.body).to.be.an("array");
+    expect(res.body.length).to.be.equal(0);
   });
 });
