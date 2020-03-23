@@ -1,5 +1,6 @@
 const { uuid } = require("uuidv4");
 const Seat = require("../models/seats.model");
+const sanitize = require("mongo-sanitize");
 
 exports.getAll = async (req, res) => {
   try {
@@ -19,14 +20,20 @@ exports.getOne = async (req, res) => {
 
 exports.post = async (req, res) => {
   console.log("seats", req.body);
+
+  const cleanClient = sanitize(req.body.client);
+  const cleanEmail = sanitize(req.body.email);
+
+  console.log("clean", cleanClient, cleanEmail);
+
   try {
-    const { day, seat, client, email } = req.body;
+    const { day, seat } = req.body;
     const newSeat = new Seat({
       id: uuid(),
       day: day,
       seat: seat,
-      client: client,
-      email: email
+      client: cleanClient,
+      email: cleanEmail
     });
     console.log("newSeat", newSeat);
     await newSeat.save();
@@ -50,14 +57,17 @@ exports.delete = async (req, res) => {
 };
 
 exports.put = async (req, res) => {
-  const { client, seat, email, day } = req.body;
+  const { seat, day } = req.body;
+
+  const cleanClient = sanitize(req.body.client);
+  const cleanEmail = sanitize(req.body.email);
 
   try {
     await Seat.updateOne(
       { _id: req.params.id },
-      { $set: { client: client } },
+      { $set: { client: cleanClient } },
       { $set: { seat: seat } },
-      { $set: { email: email } },
+      { $set: { email: cleanEmail } },
       { $set: { day: day } }
     );
     res.json({ message: "OK" });

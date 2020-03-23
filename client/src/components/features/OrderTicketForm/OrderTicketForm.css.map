@@ -1,0 +1,9 @@
+{
+    "version": 3,
+    "mappings": "AAAA,AAAA,kBAAkB,CAAC,KAAK;AACxB,kBAAkB,CAAC,MAAM;AACzB,kBAAkB,CAAC,KAAK,CAAC;EACvB,SAAS,EAAE,KAAK;CACjB",
+    "sources": [
+        "OrderTicketForm.scss"
+    ],
+    "names": [],
+    "file": "OrderTicketForm.css"
+}

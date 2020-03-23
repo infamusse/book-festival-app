@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 const cors = require("cors");
 const path = require("path");
 const socket = require("socket.io");
+const helmet = require("helmet");
+
 require("dotenv").config();
 
 const concertsRoutes = require("./concerts/concerts.routes");
@@ -21,6 +23,8 @@ app.use((req, res, next) => {
   req.io = io;
   next();
 });
+
+app.use(helmet());
 
 app.get("/api", (req, res) => {
   res.send({ message: "OK" });

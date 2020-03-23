@@ -1,4 +1,5 @@
 const Concert = require("../models/concerts.model");
+const sanitize = require("mongo-sanitize");
 
 exports.getAll = async (req, res) => {
   try {
@@ -18,7 +19,7 @@ exports.getOne = async (req, res) => {
 
 exports.getPerfomer = async (req, res) => {
   try {
-    res.json(await Concert.find({ performer: req.params.performer }));
+    res.json(await Concert.find({ performer: { $eq: req.params.performer } }));
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -26,7 +27,7 @@ exports.getPerfomer = async (req, res) => {
 
 exports.getGenre = async (req, res) => {
   try {
-    res.json(await Concert.find({ genre: req.params.genre }));
+    res.json(await Concert.find({ genre: { $eq: req.params.genre } }));
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -34,7 +35,7 @@ exports.getGenre = async (req, res) => {
 
 exports.getDay = async (req, res) => {
   try {
-    res.json(await Concert.find({ day: req.params.day }));
+    res.json(await Concert.find({ day: { $eq: req.params.day } }));
   } catch (err) {
     res.status(500).json({ message: err });
   }
@@ -66,13 +67,16 @@ exports.delete = async (req, res) => {
 };
 
 exports.put = async (req, res) => {
-  const { performer, genre, price, day } = req.body;
+  const { price, day } = req.body;
+
+  const cleanPerformer = sanitize(req.body.performer);
+  const cleanGenre = sanitize(req.body.genre);
 
   try {
     await Concert.updateOne(
       { _id: req.params.id },
-      { $set: { performer: performer } },
-      { $set: { genre: genre } },
+      { $set: { performer: cleanPerformer } },
+      { $set: { genre: cleanGenre } },
       { $set: { price: price } },
       { $set: { day: day } },
       { $set: { image: "new image" } }
